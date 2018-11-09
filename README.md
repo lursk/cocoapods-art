@@ -7,6 +7,9 @@ A CocoaPods Plugin to work with Artifactory Repository
 `gem install cocoapods-art`
 
 ## Client Configuration
+
+### Add your repository locally
+
 To add an Artifactory repository named 'myRepo' to your client:
 ```
 pod repo-art add artifactory-local http://art-prod.company.com:8081/artifactory/api/pods/myRepo
@@ -19,6 +22,18 @@ plugin 'cocoapods-art', :sources => [
     ] 
 ```
 More than one source can be included, separated by commas.
+
+### Specify your repository in a Podfile
+
+Instead of adding repository to global cocoapods config, it's possible to specify repository address in your Podfile:
+```ruby
+plugin 'cocoapods-art', :sources => [
+    '<local_specs_repo_name>' => '<repository_url>' 
+] 
+```
+The two methods can be mixed as necessery.
+
+## Authentication
 
 For authenticated access, please add the user and password to your .netrc file:
 ```

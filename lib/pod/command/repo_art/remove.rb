@@ -1,15 +1,19 @@
+require "util/repo_manager"
+
 module Pod
   class Command
     class RepoArt
       class Remove < RepoArt
-        self.summary = 'Remove an Artifactory-backed Specs repo'
+        RepoManager = Pod::RepoArt::RepoManager
+
+        self.summary = "Remove an Artifactory-backed Specs repo"
 
         self.description = <<-DESC
           Deletes the Spec repo called 'NAME' from the local spec-repos directory at '~/.cocoapods/repos-art/.'
         DESC
 
         self.arguments = [
-            CLAide::Argument.new('NAME', true)
+          CLAide::Argument.new("NAME", true),
         ]
 
         def initialize(argv)
@@ -20,15 +24,15 @@ module Pod
 
         def validate!
           super
-          help! 'Deleting a repo needs a `NAME`.' unless @name
+          help! "Deleting a repo needs a `NAME`." unless @name
           help! "repo #{@name} does not exist" unless File.directory?(repo_dir_root)
           help! "You do not have permission to delete the #{@name} repository." \
-                'Perhaps try prefixing this command with sudo.' unless File.writable?(repo_dir_root)
+                "Perhaps try prefixing this command with sudo." unless File.writable?(repo_dir_root)
         end
 
         def run
           UI.section("Removing spec repo `#{@name}`") do
-            FileUtils.rm_rf(repo_dir_root)
+            RepoManager::remove_repository(repo_dir_root)
           end
         end
 
